@@ -1,0 +1,34 @@
+﻿<Window x:Class="Notepad.Research"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notepad"
+        mc:Ignorable="d"
+        Title="Rechercher" Height="133" Width="400"
+        Background="LightGray" WindowState="Normal" WindowStyle="ToolWindow"
+        Closing="OnClosing" ContentRendered="OnShowing">
+
+    <Grid>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <!-- "<Button Grid.Column="1" Grid.Row="1">Button 5</Button> -->
+        <Label Grid.Column="0" Grid.Row="0">Rechercher : </Label>
+        <TextBox Name="SearchedWord" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="3" VerticalContentAlignment="Center"></TextBox>
+        <CheckBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" IsEnabled="False">Respecter la casse</CheckBox>
+        <Button Grid.Column="3" Grid.Row="3" Click="Click_NextOccurence" IsEnabled="False">Suivant</Button>
+        <Button Grid.Column="4" Grid.Row="3" IsEnabled="False">Annuler</Button>
+    </Grid>
+
+</Window>

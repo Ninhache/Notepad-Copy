@@ -133,6 +133,12 @@ namespace Notepad
             this.AddDate();
         }
 
+        private void Click_Open(object sender, RoutedEventArgs? e)
+        {
+            this.OpenFile();
+        }
+        
+
         /// <summary>
         ///     Execute the SaveFile() function on trigger
         /// </summary>
@@ -353,6 +359,34 @@ namespace Notepad
             this.Title = _appname + " - " + _filename;
         }
 
+
+        private void OpenFile()
+        {
+            Stream myStream;
+
+
+            OpenFileDialog dialog = new OpenFileDialog()
+            {
+                Filter = "Text Files(*.txt)|*.txt|All(*.*)|*"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                if ((myStream = dialog.OpenFile()) != null)
+                {
+                    FileStream fs = (FileStream)myStream;
+                    using (StreamReader sr = new StreamReader(fs, System.Text.Encoding.UTF8))
+                    {
+                        this.textbox.Text = sr.ReadToEnd();
+                        this.UpdateTitle(fs);
+                        this.ResetTitle();
+                        _changed = false;
+                        sr.Close();
+                    }
+                    fs.Close();
+                }
+            }
+        }
 
 
         /* UNUSED FUNCTIONS */

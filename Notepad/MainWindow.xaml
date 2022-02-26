@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notepad"
         mc:Ignorable="d"
+        Closing="OnClosing" 
         Title="Notepad" Height="450" Width="800" >
 
     <Window.Resources>
@@ -12,6 +13,7 @@
             <RoutedUICommand x:Key="keybind_new" Text="Open a new file" />
             <RoutedUICommand x:Key="keybind_exit" Text="Leave the application" />
             <RoutedUICommand x:Key="keybind_date" Text="Print the date in the app" />
+            <RoutedUICommand x:Key="keybind_save" Text="Save file at his default path" />
             <RoutedUICommand x:Key="keybind_search" Text="Search an occurence of a word in the textbox" />
         </ResourceDictionary>
     </Window.Resources>
@@ -21,6 +23,7 @@
         <KeyBinding Key="L"     Modifiers="Ctrl"    Command="{StaticResource keybind_exit}" />
         <KeyBinding Key="F5"                        Command="{StaticResource keybind_date}" />
         <KeyBinding Key="F"     Modifiers="Ctrl"    Command="{StaticResource keybind_search}" />
+        <KeyBinding Key="S"     Modifiers="Ctrl"    Command="{StaticResource keybind_save}" />
     </Window.InputBindings>
 
     <Window.CommandBindings>
@@ -28,6 +31,7 @@
         <CommandBinding Command="{StaticResource keybind_exit}" Executed="Keybind_exit" />
         <CommandBinding Command="{StaticResource keybind_date}" Executed="Keybind_date" />
         <CommandBinding Command="{StaticResource keybind_search}" Executed="Keybind_search" />
+        <CommandBinding Command="{StaticResource keybind_save}" Executed="Keybind_save" />
     </Window.CommandBindings>
 
     <Border Background="Gray">
@@ -35,10 +39,10 @@
         <DockPanel>
             <Menu DockPanel.Dock="Top" >
                 <MenuItem Header="File" HorizontalAlignment="Right" VerticalAlignment="Top">
-                    <MenuItem Header="New File" InputGestureText="Ctrl+N" Click="Click_newFile"/>
+                    <MenuItem Header="New File" InputGestureText="Ctrl+N" Click="Click_NewFile"/>
                     <MenuItem Header="New window" IsEnabled="False"/>
                     <MenuItem Header="Open..." IsEnabled="False"/>
-                    <MenuItem Header="Save" IsEnabled="False"/>
+                    <MenuItem Header="Save" Click="Click_Save" />
                     <MenuItem Header="Save as..." IsEnabled="False"/>
                     <Separator />
                     <MenuItem Header="Exit" InputGestureText="Ctrl+L" Click="Click_Exit"/>
@@ -51,13 +55,13 @@
                     <MenuItem Header="Coller" IsEnabled="False"/>
                     <MenuItem Header="Supprimer" IsEnabled="False"/>
                     <Separator />
-                    <MenuItem Header="Rechercher..." Click="Click_searchWord" InputGestureText="Ctrl+F"/>
+                    <MenuItem Header="Rechercher..." Click="Click_SearchWord" InputGestureText="Ctrl+F"/>
                     <MenuItem Header="Rechercher le suivant" IsEnabled="False"/>
                     <MenuItem Header="Rechercher le précédent" IsEnabled="False"/>
                     <MenuItem Header="Remplacer" IsEnabled="False"/>
                     <MenuItem Header="Atteindre" IsEnabled="False"/>
                     <Separator />
-                    <MenuItem Header="Selectionner tout" Click="Click_selectAll"/>
+                    <MenuItem Header="Selectionner tout" Click="Click_SelectAll"/>
                     <MenuItem Header="Heure/Date" InputGestureText="F5" Click="Click_Date"/>
                 </MenuItem>
             </Menu>
@@ -68,6 +72,7 @@
                 TextWrapping="NoWrap"
                 AcceptsReturn="True"
                 VerticalScrollBarVisibility="Visible"
+                TextChanged="Text_Changed"
             />
         </DockPanel>
 

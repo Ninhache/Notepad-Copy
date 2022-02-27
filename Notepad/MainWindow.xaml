@@ -48,7 +48,7 @@
         <DockPanel>
 
             <Menu DockPanel.Dock="Top" >
-            <MenuItem Header="File" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <MenuItem x:Name="menuitem_File" Header="File" HorizontalAlignment="Right" VerticalAlignment="Top">
                 <MenuItem Header="New File" InputGestureText="Ctrl+N" Click="Click_NewFile"/>
                 <MenuItem Header="New window" IsEnabled="False"/>
                 <MenuItem Header="Open..." Click="Click_Open"/>
@@ -57,12 +57,12 @@
                 <Separator />
                 <MenuItem Header="Exit" InputGestureText="Ctrl+L" Click="Click_Exit"/>
             </MenuItem>
-            <MenuItem Header="Edition">
+            <MenuItem x:Name="menuitem_Edition" Header="Edition" SubmenuOpened="Click_Edition" >
                 <MenuItem Header="Annuler" IsEnabled="False"/>
                 <Separator />
-                <MenuItem Header="Couper" IsEnabled="False"/>
-                <MenuItem Header="Copier" IsEnabled="False"/>
-                <MenuItem Header="Coller" IsEnabled="False"/>
+                <MenuItem x:Name="menuitem_Cut" Header="Couper" Click="Click_Cut"/>
+                <MenuItem x:Name="menuitem_Copy" Header="Copier" Click="Click_Copy"/>
+                <MenuItem x:Name="menuitem_Paste" Header="Coller" Click="Click_Paste"/>
                 <MenuItem Header="Supprimer" IsEnabled="False"/>
                 <Separator />
                 <MenuItem Header="Rechercher..." Click="Click_SearchWord" InputGestureText="Ctrl+F"/>
@@ -74,7 +74,7 @@
                 <MenuItem Header="Selectionner tout" Click="Click_SelectAll"/>
                 <MenuItem Header="Heure/Date" InputGestureText="F5" Click="Click_Date"/>
             </MenuItem>
-            <MenuItem Header="Format">
+            <MenuItem x:Name="menuitem_Format" Header="Format">
                     <MenuItem Header="Retour automatique à la ligne" IsEnabled="False"/>
                     <MenuItem Header="Police" IsEnabled="False"/>
                     <MenuItem Header="Editeur de style" IsEnabled="False"/>

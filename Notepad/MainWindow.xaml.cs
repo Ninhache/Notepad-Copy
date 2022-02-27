@@ -11,7 +11,7 @@ namespace Notepad
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow : Window
     {
         private bool _changed = false;
         private string _appname = "Bloc-Notes";
@@ -29,9 +29,8 @@ namespace Notepad
             this.ResetTitle();
         }
 
-
         /* EVENT HANDELING */
-        
+
         /// <summary>
         ///     Event called on windows close
         /// </summary>
@@ -133,11 +132,45 @@ namespace Notepad
             this.AddDate();
         }
 
+        /// <summary>
+        ///     Execute the CutText() function on trigger
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Click_Cut(object sender, RoutedEventArgs? e)
+        {
+            this.CutText();
+        }
+
+        /// <summary>
+        ///     Execute the CopyText() function on trigger
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Click_Copy(object sender, RoutedEventArgs? e)
+        {
+            this.CopyText();
+        }
+
+        /// <summary>
+        ///     Execute the PasteText() function on trigger
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Click_Paste(object sender, RoutedEventArgs? e)
+        {
+            this.PasteText();
+        }
+
+        /// <summary>
+        ///     Execute the OpenFile() function on trigger
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Click_Open(object sender, RoutedEventArgs? e)
         {
             this.OpenFile();
         }
-        
 
         /// <summary>
         ///     Execute the SaveFile() function on trigger
@@ -189,8 +222,22 @@ namespace Notepad
             this.OpenNewFile();
         }
 
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Click_Edition(object sender, RoutedEventArgs? e)
+        { 
+            ((MenuItem) this.FindName("menuitem_Paste")).IsEnabled = Clipboard.ContainsText();
+            ((MenuItem)this.FindName("menuitem_Cut")).IsEnabled = ((MenuItem)this.FindName("menuitem_Copy")).IsEnabled = textbox.SelectedText.Length > 0;
+        }
+
         /* CORE FUNCTIONS */
 
+        /// <summary>
+        ///     Open the search window, this window is able to search occurences of word you gave her
+        /// </summary>
         private void OpenSearchWindow()
         {
             this.searchWindow.Show();
@@ -201,7 +248,7 @@ namespace Notepad
         ///     the method in param will be executed
         /// </summary>
         /// <param name="methodName">Method to execute</param>
-        private void AskForSave(Action methodName)
+        private MessageBoxResult AskForSave(Action methodName)
         {
             var result = MessageBox.Show("Voulez-vous enregistrer les modifications de " + _filename, "Enregistrer", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
 
@@ -220,6 +267,7 @@ namespace Notepad
                 case MessageBoxResult.Cancel:
                     break;
             }
+            return result;
         }
 
         /// <summary>
@@ -276,6 +324,9 @@ namespace Notepad
             return save;
         }
 
+        /// <summary>
+        /// Open
+        /// </summary>
         private void OpenNewFile()
         {
             if (this.textbox == null)
@@ -360,6 +411,9 @@ namespace Notepad
         }
 
 
+        /// <summary>
+        ///     Open a file in the system, the function will ask the user if a file is currently open (and changed)
+        /// </summary>
         private void OpenFile()
         {
             Stream myStream;
@@ -370,8 +424,20 @@ namespace Notepad
                 Filter = "Text Files(*.txt)|*.txt|All(*.*)|*"
             };
 
+            var result = MessageBoxResult.None;
+
+            if(_changed)
+            {
+                result = AskForSave(() => { });
+                if(result == MessageBoxResult.Cancel || result == MessageBoxResult.None)
+                {
+                    return;
+                }
+            }
+
             if (dialog.ShowDialog() == true)
             {
+                
                 if ((myStream = dialog.OpenFile()) != null)
                 {
                     FileStream fs = (FileStream)myStream;
@@ -388,6 +454,30 @@ namespace Notepad
             }
         }
 
+        /// <summary>
+        ///     Copy the selectioned text in the textbox
+        /// </summary>
+        private void CopyText()
+        {
+            this.textbox.Copy();
+        }
+
+        /// <summary>
+        ///     Cut the selectioned text in the textbox
+        /// </summary>
+        private void CutText()
+        {
+            this.textbox.Cut();
+        }
+
+        /// <summary>
+        ///     Paste the current clipboard text in the textbox ONLY TEXT !
+        /// </summary>
+        private void PasteText()
+        {
+            this.textbox.Paste();
+        }
+
 
         /* UNUSED FUNCTIONS */
 
@@ -399,20 +489,6 @@ namespace Notepad
         private void ReplaceAll()
         {
             this.textbox.Text.Replace(this.textbox.SelectedText.ToString(), "TODO");
-        }
-        private void CopyText()
-        {
-            this.textbox.Copy();
-        }
-
-        private void CutText()
-        {         
-            this.textbox.Cut();
-        }
-
-        private void PasteText()
-        {
-            this.textbox.Paste();
         }
 
     }
